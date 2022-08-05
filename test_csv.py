@@ -21,3 +21,11 @@ for row in csv_data:
         
         file_i += 1 # increase next file name
         data = [] # reset data list
+
+
+# write trailing data to part file
+with open(f'data/data_part_{file_i}.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(header)
+    writer.writerows(data)
+f.close()
