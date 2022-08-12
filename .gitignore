@@ -1,5 +1,6 @@
 ### data
 data/*
+!data/data_part_*_extended.csv
 
 ### twitter api credentials
 twitter_cred/
