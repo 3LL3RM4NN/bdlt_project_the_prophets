@@ -1,3 +1,15 @@
+'''
+Script to split large data set from the paper "The climate change Twitter dataset".
+As the original file contains more than 15 million entries,
+it is needed to split it into smaller parts for any program to open it properly.
+All part files contain the same header as the original data file.
+
+    1. save header of data file
+    2. declare file size for part files of the complete dataset
+    3. iterate through dataset and save data in part files with declared size
+    4. to not lose the last rows, save trailing data to another part file
+'''
+
 import csv
 
 csv_data = csv.reader(open('data/The Climate Change Twitter Dataset.csv', 'r'))

@@ -1,3 +1,16 @@
+'''
+Script to gather the tweets text of the dataset from the paper "The climate change Twitter dataset".
+Because of the limitations of the Twitter API, not every tweet of the original dataset is scraped.
+The Twitter accounts used for scraping are remainders of the Bachelors Thesis of Julius Ellermann.
+Script is called via commandline where the Twitter Account and the file to work through are declared.
+
+    1. get arguments from commandline call (Twitter account and file number)
+    2. read Twitter credentials from corrsponding file
+    3. save credentials and create Twitter API
+    4. open file to scrape tweets for
+    5. scrape every 8th tweet (API Limits) and save extended data to new file
+'''
+
 import argparse
 import csv
 import tweepy
