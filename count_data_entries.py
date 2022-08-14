@@ -38,6 +38,16 @@ print(f'Data count extended data: {extended_data_count}') # 1.942.438
 filtered_data = csv.reader(open('data/clean_statement_data.csv', 'r', encoding='utf8'))
 next(filtered_data) # skip header
 
-# count the entries of the original data
+# count the entries of the filtered data
 filtered_entries_count = sum(1 for _ in filtered_data)
 print(f'Data count original data: {filtered_entries_count}') # 109.247
+
+
+# --- deduped data ----------------------------------------------------------------------------------------
+# open deduped data file
+deduped_data = csv.reader(open('data/dedup_data.csv', 'r', encoding='utf8'))
+next(deduped_data) # skip header
+
+# count the entries of the deduped data
+deduped_entries_count = sum(1 for _ in deduped_data)
+print(f'Data count original data: {deduped_entries_count}') # 68.283
