@@ -2,6 +2,7 @@
 data/*
 !data/data_part_*_extended.csv
 !data/statement_data.csv
+!data/clean_statement_data.csv
 
 ### twitter api credentials
 twitter_cred/
