@@ -34,17 +34,25 @@ for k, v in data_dict.items():
 THRESHOLD = 0.8
 
 def bag_dist(val1, val2):
-    def bag(val):
-        return Multiset(val)
+    def bag(val:str):
+        return Multiset(val.split(' '))
 
-    bag_sim = 1 - (max(len(bag(val1) - bag(val2)), len(bag(val2) - bag(val1))) / max(len(bag(val1)), len(bag(val2))))
+    bag_1 = bag(val1)
+    bag_2 = bag(val2)
+
+    bag_sim = 1 - (max(len(bag_1 - bag_2), len(bag_2 - bag_1)) / max(len(bag_1), len(bag_2)))
 
     return bag_sim
 
-duplicates = []
+dedup_data = csv.writer(open('data/dedup_data.csv', 'w', newline='', encoding='utf8'))
+dedup_data.writerow(header)
 for block_key, ids in blocks.items():
-    for id1 in ids:
-        for id2 in ids:
+    ids_in_block = {}
+    for id in ids:
+        ids_in_block[f'{id}'] = True
+
+    for i, id1 in enumerate(ids):
+        for id2 in ids[i:]:
             if id1 == id2:
                 continue
             val1 = data_dict[id1][-1]
@@ -52,5 +60,8 @@ for block_key, ids in blocks.items():
             sim = bag_dist(val1, val2)
 
             if sim > THRESHOLD:
-                duplicates.append((id1, id2))
-                print(val1, val2)
+                ids_in_block[f'{id2}'] = False
+
+    for k, v in ids_in_block.items():
+        if v:
+            dedup_data.writerow(data_dict[k])

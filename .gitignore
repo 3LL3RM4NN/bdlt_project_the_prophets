@@ -1,8 +1,7 @@
 ### data
-data/*
-!data/data_part_*_extended.csv
-!data/statement_data.csv
-!data/clean_statement_data.csv
+data/disasters.csv
+data/The Climate Change Twitter Dataset.csv
+data/data_part_*.csv
 
 ### twitter api credentials
 twitter_cred/
