@@ -1,5 +1,14 @@
 '''
-TODO: script description
+Script to clean (possible) statements about the future.
+
+    1. make all text lowercase
+    2. remove emojis
+    3. remove newlines and tabs
+    4. replace links with "LINK" keyword
+    5. replace user @mention with "USER_REF" keyword
+    6. remove structures in form of &amp;
+    7. remove all kind of trailing ticks and special forms of them
+    8. replace multiple spaces with a single one
 '''
 
 import csv
@@ -28,7 +37,6 @@ def de_emojify(text):
         u"\u3030"
                       "]+", re.UNICODE)
     return re.sub(emoj, '', text)
-
 
 
 future_data = csv.reader(open(f'data/statement_data.csv', 'r', encoding='utf8'))

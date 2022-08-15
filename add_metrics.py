@@ -1,3 +1,14 @@
+'''
+Script to add classification metrics to the data.
+Classification with TextBlob (polarity and subjectivity).
+Classification with the latest Twitter Roberta Model available at HuggingFace (label and highest score).
+
+    1. load model for classification
+    2. prepare new file for extended data
+    3. sentiment score tweet text with TextBlob and append metrics to data
+    4. score tweets text with Twitter Roberta Model and append metrics to data
+'''
+
 import csv
 from textblob import TextBlob
 from transformers import AutoTokenizer, AutoModelForSequenceClassification

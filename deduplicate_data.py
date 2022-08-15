@@ -1,13 +1,13 @@
 '''
-TODO: script description
-'''
+Script to deduplicate the data.
+Since duplicates were often posted within one day,
+all tweets of a single day are checked for suplicates seperately.
+NOTE: This is also done due to runtime optimization.
 
-'''
-plan:
-    1. dict key = tweet_id, value = complete csv row (list)
-    2. blocking with date (block every day)
-    3. if duplicate: keep only tweet with smaller id
-    4. assemble reduced dataset
+    1. create a dictionary of the data with tweet id as key
+    2. create blocks with day as key and all the ids of the day as value
+    3. in each block, compare all tweets with each other and calculate similarity with bag distance
+    4. keep only the originals and discard duplicate tweets
 '''
 
 import csv
@@ -28,13 +28,14 @@ blocks = defaultdict(list)
 for k, v in data_dict.items():
     blocks[f'{v[0].split()[0]}'].append(k)
         
-#print(blocks['2018-10-01'])
 
 # compare texts in blocks with bag distance
 THRESHOLD = 0.8
 
 def bag_dist(val1, val2):
+    # calculate the bag distance between two sets of tokens
     def bag(val:str):
+        # create a mulitset used for bag distance calculation
         return Multiset(val.split(' '))
 
     bag_1 = bag(val1)
@@ -47,10 +48,15 @@ def bag_dist(val1, val2):
 dedup_data = csv.writer(open('data/dedup_data.csv', 'w', newline='', encoding='utf8'))
 dedup_data.writerow(header)
 for block_key, ids in blocks.items():
+    # create a helper dict for all ids contained in a block
+    # set all ids to true (start with everything as original tweet, no duplicate)
     ids_in_block = {}
     for id in ids:
         ids_in_block[f'{id}'] = True
 
+    # check every tweet for duplicates
+    # if duplicate exists, set its value in helper dict to false
+    # keep only the first occurence of the tweet as original
     for i, id1 in enumerate(ids):
         for id2 in ids[i:]:
             if id1 == id2:
@@ -59,9 +65,11 @@ for block_key, ids in blocks.items():
             val2 = data_dict[id2][-1]
             sim = bag_dist(val1, val2)
 
+            # if two tweets are very similar, keep only the original (first occurence)
             if sim > THRESHOLD:
                 ids_in_block[f'{id2}'] = False
 
+    # keep data with True value in helper dict (originals)
     for k, v in ids_in_block.items():
         if v:
             dedup_data.writerow(data_dict[k])
