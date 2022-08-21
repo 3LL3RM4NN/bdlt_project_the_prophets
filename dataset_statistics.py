@@ -82,3 +82,30 @@ print(aggressiveness_counts)
 print(stance_counts)
 print(topic_counts)
 print(gender_counts)
+
+
+# --------------------------------------------------------------------------------------------------
+data = pd.read_csv(f'data/classified_data.csv', sep=',', header=0)
+data['created_at'] = pd.to_datetime(data['created_at'])
+
+aggressiveness_counts =  data['aggressiveness'].value_counts()
+stance_counts =  data['stance'].value_counts()
+topic_counts =  data['topic'].value_counts()
+gender_counts =  data['gender'].value_counts()
+
+print("###### Classified data ##############")
+print(aggressiveness_counts)
+print(stance_counts)
+print(topic_counts)
+print(gender_counts)
+
+aggressiveness_counts =  data['aggressiveness'].value_counts(normalize=True)
+stance_counts =  data['stance'].value_counts(normalize=True)
+topic_counts =  data['topic'].value_counts(normalize=True)
+gender_counts =  data['gender'].value_counts(normalize=True)
+
+print("###### Classified data percentages ##############")
+print(aggressiveness_counts)
+print(stance_counts)
+print(topic_counts)
+print(gender_counts)
