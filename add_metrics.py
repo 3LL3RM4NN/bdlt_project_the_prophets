@@ -24,10 +24,10 @@ model = AutoModelForSequenceClassification.from_pretrained(MODEL)
 deduped_data = csv.reader(open('data/dedup_data.csv', 'r', encoding='utf8'))
 header = next(deduped_data) # skip header
 
-extended_header = ['tb_polarity', 'tb_subjectivity', 'hf_label', 'hf_score']
+extended_header = ['tb_polarity', 'tb_subjectivity', 'hf_label', 'hf_score_neg', 'hf_score_neutral', 'hf_score_pos']
 header += extended_header
 
-classified_data = csv.writer(open('data/classified_data.csv', 'w', newline='', encoding='utf8'))
+classified_data = csv.writer(open('data/classified_data_1.csv', 'w', newline='', encoding='utf8'))
 classified_data.writerow(header)
 
 for row in deduped_data:
@@ -43,8 +43,12 @@ for row in deduped_data:
     scores = softmax(scores)
 
     label = LABELS[numpy.argmax(scores)]
-    score = max(scores)
+    score_neg = scores[0]
+    score_neutral = scores[1]
+    score_pos = scores[2]
     row.append(label)
-    row.append(score)
+    row.append(score_neg)
+    row.append(score_neutral)
+    row.append(score_pos)
     
     classified_data.writerow(row)
