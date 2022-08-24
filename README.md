@@ -6,20 +6,23 @@ For this small project [**The climate change Twitter dataset**](https://doi.org/
 
 ## data processing steps
 ### splitting the data
-The dataset has over 15 million data entries in **.csv** format, which is too much to handle for most standard hardware. Thus it was split into smaller chunks containing only 1 million entries each with the `split_large_csv.py` script.
+The dataset has over 15 million data entries in **.csv** format, which is too much to handle for most standard hardware. Thus it was split into smaller chunks containing only 1 million entries each with the `1_split_large_csv.py` script.
 
 ### scraping tweet text
-For finding *statements about the future* the tweets text is crucial, but not contained in the original dataset. As Twitter has [API restrictions](https://developer.twitter.com/en/docs/twitter-api/rate-limits) (900 tweets every 15 minutes), only every eights tweet was scraped with the `get_tweets_for_ids.py` script. For this to work at least one Twitter account with API access is required. As the data is split into chunks, the script can be run for each chunk in parallel, if that many API access Twitter accounts exist.
+For finding *statements about the future* the tweets text is crucial, but not contained in the original dataset. As Twitter has [API restrictions](https://developer.twitter.com/en/docs/twitter-api/rate-limits) (900 tweets every 15 minutes), only every eights tweet was scraped with the `2_get_tweets_for_ids.py` script. For this to work at least one Twitter account with API access is required. As the data is split into chunks, the script can be run for each chunk in parallel, if that many API access Twitter accounts exist.
 
 ### finding *statements about the future*
-The scraped tweets were searched for *statements about the future* with the help of [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) in the script `get_future_statements.py`. Not all expressions performed equally well:
+The scraped tweets were searched for *statements about the future* with the help of [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) in the script `3_get_future_statements.py`. Not all expressions performed equally well:
 ![regex_performance](plots/regex_count.png)
 
+### data cleaning
+Twitter data is often contains hyperlinks, user references, emojis and whitespaces. These were cleaned with the script `4_data_cleaning.py`.
+
 ### data deduplication
-Since automation on Twitter is allowed, spamming occurs on the online social network. Thus these duplicates had to be found and removed from the dataset with the script `deduplicate_data.py`. For this the data was grouped per day and on each day only the originals (first occurence of a tweet) were kept.
+Since automation on Twitter is allowed, spamming occurs on the online social network. Thus these duplicates had to be found and removed from the dataset with the script `5_deduplicate_data.py`. For this the data was grouped per day and on each day only the originals (first occurence of a tweet) were kept.
 
 ### sentiment classification
-For more information on the *statements about the future*, the tweet texts were sentiment scored with the [TextBlob](https://textblob.readthedocs.io/en/dev/) library and the [latest Twitter roBERTa](https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest) model available at HuggingFace. The new metrics were appened to the deduplicated data in the `add_metrics.py` script.
+For more information on the *statements about the future*, the tweet texts were sentiment scored with the [TextBlob](https://textblob.readthedocs.io/en/dev/) library and the [latest Twitter roBERTa](https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest) model available at HuggingFace. The new metrics were appened to the deduplicated data in the `6_add_metrics.py` script.
 
 
 ## data measurement
