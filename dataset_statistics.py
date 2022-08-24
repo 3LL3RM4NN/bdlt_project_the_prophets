@@ -1,5 +1,18 @@
 '''
-TODO: Script description
+Script to extract statistics about the different datasets in order to compare them
+
+Statistics include value counts for
+    - aggressiveness
+    - stance
+    - gender
+    - topic 
+
+for each of the following dataset variants
+    - sampled original data
+    - statement data
+    - deduplicated (and classified) statements
+
+Results are printed to stdout
 '''
 
 import pandas as pd
@@ -28,7 +41,7 @@ for i in range(1,NUM_FILES):
     topic_counts +=  data['topic'].value_counts()
     gender_counts +=  data['gender'].value_counts()
 
-print("####### Original Data ###########")
+print("####### Sampled Data ###########")
 print(aggressiveness_counts)
 print(stance_counts)
 print(topic_counts)
